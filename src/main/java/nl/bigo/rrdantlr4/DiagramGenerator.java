@@ -19,15 +19,30 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The workhorse of this little library: it parses the ANTLR 4
+ * grammar, and invokes the JavaScript library that translates
+ * the DSL produces by the ANTLR parser to a SVG.
+ *
+ * Through this class you can also create an html page containing
+ * railroad diagrams of all parsed rules and create individual png
+ * images from one (or more) grammar rules.
+ */
 public class DiagramGenerator {
 
+    // Java's built-in JS interpreter (Rhino).
     private static final ScriptEngineManager MANAGER = new ScriptEngineManager();
     private static final ScriptEngine ENGINE = MANAGER.getEngineByName("JavaScript");
-    private static final String RAILROAD_SCRIPT = Utils.slurp(DiagramGenerator.class.getResourceAsStream("/railroad-diagram.js"));
-    private static final String RAILROAD_CSS = Utils.slurp(DiagramGenerator.class.getResourceAsStream("/railroad-diagram.css"));
-    private static final String HTML_TEMPLATE = Utils.slurp(DiagramGenerator.class.getResourceAsStream("/template.html"));
-    private static final String CSS_TEMPLATE = Utils.slurp(DiagramGenerator.class.getResourceAsStream("/template.css"));
 
+    // The library used to convert grammar rules to SVG.
+    private static final String RAILROAD_SCRIPT = slurp(DiagramGenerator.class.getResourceAsStream("/railroad-diagram.js"));
+    private static final String RAILROAD_CSS = slurp(DiagramGenerator.class.getResourceAsStream("/railroad-diagram.css"));
+
+    // The templates used to create an HTML page from all grammar rules.
+    private static final String HTML_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.html"));
+    private static final String CSS_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.css"));
+
+    // Initialize the JS engine to load the library used to convert the diagram-DSL
     static {
         try {
             ENGINE.eval(RAILROAD_SCRIPT);
@@ -39,12 +54,35 @@ public class DiagramGenerator {
         }
     }
 
+    // The ANTLR 4 grammar to parse. It can be a remote- or local file,
+    // or even the grammar itself (as a string).
     private final String antlr4Grammar;
+
+    // The filename of the ANTLR 4 grammar.
     private String antlr4GrammarFileName;
+
+    // The grammar name of the grammar to parse.
     private String antlr4GrammarName;
+
+    // The directory to save the html and/or png diagrams to.
     private File outputDir;
+
+    // The collection that maps all grammar rules from `antlr4Grammar` to
+    // a DSL that the JavaScript library, `railroad-diagram.js`, uses to
+    // translate to SVG-railroad diagrams.
     private final Map<String, String> rules;
 
+    /**
+     * Creates a new instance of this class and will parse the
+     * provided `antlr4Grammar`.
+     *
+     * @param antlr4Grammar
+     *         the ANTLR 4 grammar to parse. It can be a remote- or local file,
+     *         or even the grammar itself (as a string).
+     *
+     * @throws IOException
+     *         when the grammar could not be parsed.
+     */
     public DiagramGenerator(String antlr4Grammar) throws IOException {
         this.antlr4Grammar = antlr4Grammar.trim();
         this.antlr4GrammarFileName = null;
@@ -53,12 +91,21 @@ public class DiagramGenerator {
         this.rules = parse();
     }
 
+    /**
+     * Parses `this.antlr4Grammar` and returns all parsed grammar rules.
+     *
+     * @return all parsed grammar rules.
+     *
+     * @throws IOException
+     *         when the grammar could not be parsed.
+     */
     private Map<String, String> parse() throws IOException {
 
         InputStream input;
 
         File file = new File(antlr4Grammar);
 
+        // First check if `antlr4Grammar` is a local file.
         if (file.exists()) {
             input = new FileInputStream(antlr4Grammar);
             this.antlr4GrammarFileName = file.getName();
@@ -77,10 +124,11 @@ public class DiagramGenerator {
         this.antlr4GrammarName = this.antlr4GrammarFileName.replaceAll(".[gG]4$", "");
         this.outputDir = new File("./output", this.antlr4GrammarName);
 
-        if(!this.outputDir.exists() && !this.outputDir.mkdirs()) {
+        if (!this.outputDir.exists() && !this.outputDir.mkdirs()) {
             throw new RuntimeException("could not create output dir: " + this.outputDir);
         }
 
+        // Now parse the grammar.
         ANTLRv4Lexer lexer = new ANTLRv4Lexer(new ANTLRInputStream(new BufferedInputStream(input)));
         ANTLRv4Parser parser = new ANTLRv4Parser(new CommonTokenStream(lexer));
 
@@ -91,10 +139,27 @@ public class DiagramGenerator {
         return visitor.getRules();
     }
 
+    /**
+     * Returns a map containing all parser- and lexer rules mapped to
+     * the DSL `railroad-diagram.js` uses to translate to SVG-railroad
+     * diagrams.
+     *
+     * @return a map containing all parser- and lexer rules mapped to
+     * the DSL `railroad-diagram.js` uses to translate to SVG-railroad
+     * diagrams.
+     */
     public Map<String, String> getRules() {
         return new LinkedHashMap<String, String>(rules);
     }
 
+    /**
+     * Returns the SVG railroad diagram corresponding to the provided grammar rule.
+     *
+     * @param ruleName
+     *         the grammar rule to get the SVG railroad diagram from.
+     *
+     * @return the SVG railroad diagram corresponding to the provided grammar rule.
+     */
     public String getSVG(String ruleName) {
 
         try {
@@ -104,19 +169,28 @@ public class DiagramGenerator {
                 throw new RuntimeException("no such rule found: " + ruleName);
             }
 
+            // Evaluate the DSL that translates the input back to a SVG.
             String svg = (String) ENGINE.eval(dsl.toString());
 
+            // Insert the proper namespaces and (custom) style sheet.
             svg = svg.replaceFirst("<svg ", "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
             svg = svg.replaceFirst("<g ", "<style type=\"text/css\">" + RAILROAD_CSS + "</style>\n<g ");
 
             return svg;
         }
         catch (ScriptException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Creates a PNG image from the provided grammar rule.
+     *
+     * @param ruleName
+     *         the grammar rule to create a PNG image from.
+     *
+     * @return `true` iff the writing of the image was successful.
+     */
     public boolean createDiagram(String ruleName) {
 
         String svg = getSVG(ruleName);
@@ -156,10 +230,23 @@ public class DiagramGenerator {
         }
     }
 
+    /**
+     * Creates a default (index.html) page containing all grammar rules.
+     *
+     * @return `true` iff the creation of the html page was successful.
+     */
     public boolean createHtml() {
         return createHtml("index.html");
     }
 
+    /**
+     * Creates an html page containing all grammar rules.
+     *
+     * @param fileName
+     *         the file name of the generated html page.
+     *
+     * @return `true` iff the creation of the html page was successful.
+     */
     public boolean createHtml(String fileName) {
 
         String template = HTML_TEMPLATE;
@@ -197,6 +284,28 @@ public class DiagramGenerator {
             }
         }
     }
+
+    /**
+     * Converts an input stream into a String.
+     *
+     * @param input
+     *         the input to convert into a String.
+     *
+     * @return the input stream as a String.
+     */
+    private static String slurp(InputStream input) {
+
+        StringBuilder builder = new StringBuilder();
+        Scanner scan = new Scanner(input);
+
+        while (scan.hasNextLine()) {
+            builder.append(scan.nextLine()).append(scan.hasNextLine() ? "\n" : "");
+        }
+
+        return builder.toString();
+    }
+
+    // TODO rewrite the stuff below to properly wrap <a ...> tags around the <text ...> tags that have a corresponding grammar rule in `this#rules`.
 
     // The pattern matching a SVG text tag, or any other single character.
     private static final Pattern TEXT_PATTERN = Pattern.compile("(<text\\s+[^>]*?>\\s*(.+?)\\s*</text>)|[\\s\\S]");

@@ -7,10 +7,28 @@ import java.util.*;
 
 import static nl.bigo.rrdantlr4.ANTLRv4Parser.*;
 
+/**
+ * A visitor used to collect all rules from an ANTLR 4 grammar and
+ * translate the parse tree into a DSL that the JavaScript library
+ * uses to create the SVG for each grammar rule.
+ *
+ * [1] https://github.com/tabatkins/railroad-diagrams
+ */
 public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
 
-    private final Map<String, String> rules;
+    // A linked hash-map will guarantee the order of the grammar rules
+    // to be the same as they occur inside the grammar.
+    //
+    // The collection maps all grammar rules from the ANTLR 4 grammar to
+    // a DSL that the JavaScript library, `railroad-diagram.js`, uses to
+    // translate to SVG-railroad diagrams.
+    private final LinkedHashMap<String, String> rules;
 
+    /**
+     * Creates a new instance of this visitor. Note that many of the
+     * overridden methods are not used: we're only interested in lexer-
+     * and parser-rules (and their contents).
+     */
     public RuleVisitor() {
         this.rules = new LinkedHashMap<String, String>();
     }
@@ -813,31 +831,14 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
         return super.visitId(ctx);
     }
 
-    /**
-     * TODO
-     *
-     * @param ruleName
-     * @return
-     */
     public String getDiagram(String ruleName) {
         return this.rules.get(ruleName);
     }
 
-    /**
-     * TODO
-     *
-     * @return
-     */
     public Map<String, String> getRules() {
         return new LinkedHashMap<String, String>(this.rules);
     }
 
-    /**
-     * TODO
-     *
-     * @param node
-     * @return
-     */
     private String escapeTerminal(TerminalNode node) {
 
         String text = node.getText();
@@ -852,13 +853,6 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
         }
     }
 
-    /**
-     * TODO
-     *
-     * @param collection
-     * @param index
-     * @return
-     */
     private String comma(Collection<?> collection, int index) {
         return index < collection.size() - 1 ? ", " : "";
     }

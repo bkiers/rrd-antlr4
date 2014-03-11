@@ -1,7 +1,21 @@
 package nl.bigo.rrdantlr4;
 
+/**
+ * A class containing a main method used in the packaged JAR file to
+ * parse a grammar provided from the command line.
+ */
 public class Main {
 
+    /**
+     * The entry point for the command line.
+     *
+     * @param args
+     *         the command line parameters, expected is one parameter.
+     *
+     * @throws Exception
+     *         when the grammar is invalid, inaccessible, or if I goofed
+     *         things up.
+     */
     public static void main(String[] args) throws Exception {
 
         if (args.length != 1) {
@@ -25,6 +39,6 @@ public class Main {
 
         generator.createHtml();
 
-        System.out.println("done!");
+        System.out.println("finished");
     }
 }
