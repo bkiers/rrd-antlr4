@@ -1,6 +1,6 @@
 # RRD for ANTLR4
 
-Railroad Diagrams for ANTLR v4 grammar rules.
+Railroad Diagrams for ANTLR 4 grammar rules.
 
 ## Introduction
 
@@ -39,12 +39,13 @@ will have been generated in the folder `./output/Json`. The html file
 does not make use of the png files but uses SVG to display the railroad
 diagram and will look like this:
 
-![json diagrams](TODO)
+![json diagrams](https://raw.github.com/bkiers/rrd-antlr4/master/static/Json.g4)
 
-## Using programmatic
+## Using programmatically
 
-To use this library in your own code, either stick the JAR file in your
-classpath, or add the following dependency to your POM:
+To use this library in your own code, either stick the JAR file
+(rrd-antlr4-0.1.0.jar) in your classpath, or add the following
+dependency to your POM:
 
 ```xml
 <dependency>
@@ -57,12 +58,56 @@ classpath, or add the following dependency to your POM:
 and parse a grammar file as follows:
 
 ```java
-TODO
+String grammarFileName = "/path/to/Json.g4";
+DiagramGenerator generator = new DiagramGenerator(grammarFileName);
+
+// Print all parsed rules
+System.out.println("all parsed rules: " + generator.getRules().keySet());
+
+// The name of the rule to create a railroad diagram of
+String ruleName = "jsonObject";
+
+// Get the SVG of the rule
+String svg = generator.getSVG(ruleName);
+System.out.println("the svg looks like this: " + svg);
+
+// Create the PNG railroad diagram
+boolean success = generator.createDiagram(ruleName);
+System.out.println("successfully created diagram: " + success);
+
+// Create an html file containing all rules
+success = generator.createHtml("/path/to/file.html");
+System.out.println("successfully created the html file: " + success);
 ```
 
 ## Credits
 
-* [ANTLR 4](https://github.com/antlr/antlr4) grammar (and runtime) to parse ANTLR 4 grammars
 * [railroad-diagrams](https://github.com/tabatkins/railroad-diagrams) to create the SVG diagrams of ANTLR 4's rules
-* [Batik](http://xmlgraphics.apache.org/batik/) to convert SVG to PNG
+* [ANTLR 4](https://github.com/antlr/antlr4) grammar (and runtime) to parse ANTLR 4 grammars
+* [Batik](http://xmlgraphics.apache.org/batik) to convert SVG to PNG
 
+## License
+
+[The MIT License (MIT)](http://opensource.org/licenses/MIT)
+
+```
+Copyright (c) 2014 Bart Kiers
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
