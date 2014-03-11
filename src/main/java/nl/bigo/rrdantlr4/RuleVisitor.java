@@ -1,11 +1,11 @@
-package nl.bigo.antlr4doc;
+package nl.bigo.rrdantlr4;
 
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.*;
 
-import static nl.bigo.antlr4doc.ANTLRv4Parser.*;
+import static nl.bigo.rrdantlr4.ANTLRv4Parser.*;
 
 public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
 

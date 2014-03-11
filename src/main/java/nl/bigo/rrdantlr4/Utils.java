@@ -1,4 +1,4 @@
-package nl.bigo.antlr4doc;
+package nl.bigo.rrdantlr4;
 
 import java.io.InputStream;
 import java.util.Scanner;

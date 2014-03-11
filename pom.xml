@@ -1,14 +1,13 @@
-<project
-        xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.big-o</groupId>
-    <artifactId>antlr4-doc</artifactId>
+    <artifactId>rrd-antlr4</artifactId>
     <packaging>jar</packaging>
     <version>0.1.0</version>
-    <name>antlr4-doc</name>
+    <name>rrd-antlr4</name>
 
     <properties>
         <antlr4.version>4.1</antlr4.version>
@@ -81,7 +80,7 @@
                         <argument>install</argument>
                         <argument>exec:java</argument>
                     </arguments>
-                    <mainClass>nl.bigo.antlr4doc.Main</mainClass>
+                    <mainClass>nl.bigo.rrdantlr4.Main</mainClass>
                 </configuration>
             </plugin>
 
@@ -114,7 +113,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>nl.bigo.antlr4doc.Main</mainClass>
+                                    <mainClass>nl.bigo.rrdantlr4.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
