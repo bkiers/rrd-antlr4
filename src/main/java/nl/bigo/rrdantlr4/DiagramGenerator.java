@@ -231,23 +231,14 @@ public class DiagramGenerator {
     }
 
     /**
-     * Creates a default (index.html) page containing all grammar rules.
-     *
-     * @return `true` iff the creation of the html page was successful.
-     */
-    public boolean createHtml() {
-        return createHtml("index.html");
-    }
-
-    /**
-     * Creates an html page containing all grammar rules.
+     * Creates an html page as a string of all grammar rules.
      *
      * @param fileName
-     *         the file name of the generated html page.
+     *         the name of the html page.
      *
-     * @return `true` iff the creation of the html page was successful.
+     * @return an html page as a string of all grammar rules.
      */
-    public boolean createHtml(String fileName) {
+    public String getHtml(String fileName) {
 
         String template = HTML_TEMPLATE;
 
@@ -267,11 +258,35 @@ public class DiagramGenerator {
 
         template = this.addLinks(fileName, template);
 
+        return template;
+    }
+
+    /**
+     * Creates a default (index.html) page containing all grammar rules.
+     *
+     * @return `true` iff the creation of the html page was successful.
+     */
+    public boolean createHtml() {
+        return createHtml("index.html");
+    }
+
+    /**
+     * Creates an html page containing all grammar rules.
+     *
+     * @param fileName
+     *         the file name of the generated html page.
+     *
+     * @return `true` iff the creation of the html page was successful.
+     */
+    public boolean createHtml(String fileName) {
+
+        String html = this.getHtml(fileName);
+
         PrintWriter out = null;
 
         try {
             out = new PrintWriter(new File(this.outputDir, fileName));
-            out.write(template);
+            out.write(html);
             return true;
         }
         catch (IOException e) {
