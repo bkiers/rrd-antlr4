@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         if (args.length != 1) {
-            System.err.println("usage: java -jar rrd-antlr4.jar GRAMMAR_FILE");
+            System.err.println("usage: java -jar rrd-antlr4-0.1.0.jar GRAMMAR_FILE");
             System.exit(1);
         }
 

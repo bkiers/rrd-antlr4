@@ -41,6 +41,19 @@ diagram and will look like this:
 
 ![json diagrams](https://raw.github.com/bkiers/rrd-antlr4/master/static/json.png)
 
+The parameter can be a remove file (as shown in the example above), or
+a local file but can even be a grammar. The command below:
+
+```
+java -jar target/rrd-antlr4-0.1.0.jar "grammar T; parse : .* EOF; ANY : . ;"
+```
+
+will generate the following 2 diagrams:
+
+![parse diagram](https://raw.github.com/bkiers/rrd-antlr4/master/static/parse.png)
+
+![ANY diagram](https://raw.github.com/bkiers/rrd-antlr4/master/static/ANY.png)
+
 ## Using programmatically
 
 To use this library in your own code, either stick the JAR file

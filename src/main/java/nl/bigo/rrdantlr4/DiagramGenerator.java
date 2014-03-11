@@ -69,7 +69,9 @@ public class DiagramGenerator {
             input = connection.getInputStream();
         }
         else {
-            throw new RuntimeException("could not find the file or URL: " + antlr4Grammar);
+            // We'll assume the the string _is_ the ANTLR 4 grammar...
+            this.antlr4GrammarFileName = "grammar-" + System.currentTimeMillis();
+            input = new ByteArrayInputStream(antlr4Grammar.getBytes("UTF-8"));
         }
 
         this.antlr4GrammarName = this.antlr4GrammarFileName.replaceAll(".[gG]4$", "");
