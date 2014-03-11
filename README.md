@@ -39,7 +39,7 @@ will have been generated in the folder `./output/Json`. The html file
 does not make use of the png files but uses SVG to display the railroad
 diagram and will look like this:
 
-![json diagrams](https://raw.github.com/bkiers/rrd-antlr4/master/static/Json.g4)
+![json diagrams](https://raw.github.com/bkiers/rrd-antlr4/master/static/Json.png)
 
 ## Using programmatically
 
