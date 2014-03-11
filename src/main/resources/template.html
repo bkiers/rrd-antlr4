@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>${grammar}</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <style>
+        ${css}
+    </style>
+    <!--
+    <script type="text/javascript">
+        $(document).ready(function ($) {
+            $('#tabs').tab();
+        });
+    </script>
+    -->
+</head>
+<body>
+<!--
+    <div class="container">
+
+        <div id="content">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <li class="active"><a href="#grammar" data-toggle="tab">grammar</a></li>
+                <li><a href="#diagrams" data-toggle="tab">diagrams</a></li>
+                <li><a href="#help" data-toggle="tab">help</a></li>
+            </ul>
+            <div id="my-tab-content" class="tab-content">
+                <div class="tab-pane active" id="grammar">
+                    <h1>grammar</h1>
+                    <p>the grammar</p>
+                </div>
+                <div class="tab-pane" id="diagrams">
+                    <h1>diagrams</h1>
+                    <p>the diagrams</p>
+                </div>
+                <div class="tab-pane" id="help">
+                    <h1>help</h1>
+                    <p>?</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+-->
+
+    <h1>${grammar}</h1>
+
+    <table class="table">
+        <tbody>
+            ${rows}
+        </tbody>
+    </table>
+
+</body>
+</html>

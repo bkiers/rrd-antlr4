@@ -3,10 +3,7 @@ package nl.bigo.antlr4doc;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static nl.bigo.antlr4doc.ANTLRv4Parser.*;
 
@@ -15,7 +12,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
     private final Map<String, String> rules;
 
     public RuleVisitor() {
-        this.rules = new HashMap<String, String>();
+        this.rules = new LinkedHashMap<String, String>();
     }
 
     //    grammarSpec
@@ -344,7 +341,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
             return this.visitLexerElements(ctx.lexerElements());
         }
         else {
-            return "Comment('ɛ')";
+            return "Comment('&#949;')";
         }
     }
 
@@ -415,7 +412,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
             }
         }
         else {
-            return "Comment('ɛ')";
+            return "Comment('&#949;')";
         }
 
         return builder.toString();
@@ -511,7 +508,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
             return this.visitElements(ctx.elements());
         }
         else {
-            return "Comment('ɛ')";
+            return "Comment('&#949;')";
         }
     }
 
@@ -577,7 +574,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
             return "Comment('predicate')";
         }
         else {
-            return "Comment('ɛ')";
+            return "Comment('&#949;')";
         }
     }
 
@@ -667,7 +664,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
             return this.visitTerminal(ctx.LEXER_CHAR_SET());
         }
         else {
-            return "Comment('any char')";
+            return "Terminal('any char')";
         }
     }
 
@@ -694,7 +691,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
             return this.visitNotSet(ctx.notSet());
         }
         else {
-            return "Comment('any token')";
+            return "NonTerminal('any token')";
         }
     }
 
@@ -832,7 +829,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
      * @return
      */
     public Map<String, String> getRules() {
-        return new HashMap<String, String>(this.rules);
+        return new LinkedHashMap<String, String>(this.rules);
     }
 
     /**

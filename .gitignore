@@ -1,4 +1,4 @@
 target/
 .idea/
 *.iml
-diagrams/
+output/

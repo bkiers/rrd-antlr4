@@ -12,6 +12,7 @@
 
     <properties>
         <antlr4.version>4.1</antlr4.version>
+        <batik.version>1.7</batik.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -32,21 +33,16 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.apache.xmlgraphics</groupId>-->
-            <!--<artifactId>batik-svggen</artifactId>-->
-            <!--<version>1.7</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-transcoder</artifactId>
-            <version>1.7</version>
+            <version>${batik.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-codec</artifactId>
-            <version>1.7</version>
+            <version>${batik.version}</version>
         </dependency>
 
     </dependencies>
