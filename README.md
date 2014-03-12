@@ -58,7 +58,7 @@ will generate the following 2 diagrams:
 
 To use this library in your own code, either stick the JAR file
 (rrd-antlr4-0.1.0.jar) in your classpath, or add the following
-dependency to your POM:
+dependency to your POM (after having done a `mvn clean package`!):
 
 ```xml
 <dependency>
