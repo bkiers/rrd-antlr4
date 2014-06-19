@@ -41,7 +41,7 @@ diagram and will look like this:
 
 ![json diagrams](https://raw.github.com/bkiers/rrd-antlr4/master/static/json.png)
 
-The parameter can be a remove file (as shown in the example above), or
+The parameter can be a remote file (as shown in the example above), or
 a local file but can even be a grammar. The command below:
 
 ```
