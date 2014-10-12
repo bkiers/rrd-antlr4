@@ -847,7 +847,7 @@ public class RuleVisitor extends ANTLRv4ParserBaseVisitor<String> {
 
         switch (node.getSymbol().getType()) {
             case ANTLRv4Lexer.STRING_LITERAL:
-                return "\\'" + escaped.substring(1, text.length() - 1) + "\\'";
+                return "\\'" + escaped.substring(1, escaped.length() - 1) + "\\'";
             default:
                 return escaped.replace("'", "\\'");
         }
