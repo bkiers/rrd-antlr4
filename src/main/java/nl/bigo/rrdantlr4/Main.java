@@ -1,5 +1,11 @@
 package nl.bigo.rrdantlr4;
 
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 /**
  * A class containing a main method used in the packaged JAR file to
  * parse a grammar provided from the command line.
@@ -18,12 +24,23 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
 
-        if (args.length != 1) {
-            System.err.println("usage: java -jar rrd-antlr4-0.1.0.jar GRAMMAR_FILE");
+        RrdAntlrOptions rrdAntlrOptions = new RrdAntlrOptions();
+        final CmdLineParser cmdLineParser = new CmdLineParser(rrdAntlrOptions);
+
+        try {
+            cmdLineParser.parseArgument(args);
+        } catch (CmdLineException e) {
+            System.err.println(e.getMessage());
+            printUsage(cmdLineParser, System.err);
             System.exit(1);
         }
 
-        String fileName = args[0];
+        if (rrdAntlrOptions.isRequestingHelp()) {
+            printUsage(cmdLineParser, System.out);
+            System.exit(0);
+        }
+
+        String fileName = rrdAntlrOptions.getInputFileName();
 
         System.out.println("parsing: " + fileName + " ...");
 
@@ -37,8 +54,13 @@ public class Main {
 
         System.out.println("creating an html page of the grammar...");
 
-        generator.createHtml();
+        generator.createHtml(rrdAntlrOptions.getOutputFileName());
 
         System.out.println("finished");
+    }
+
+    private static void printUsage(CmdLineParser cmdLineParser, PrintStream out) {
+        out.println("usage: java -jar rrd-antlr4-0.1.0.jar [options] GRAMMAR_FILE");
+        cmdLineParser.printUsage(out);
     }
 }
