@@ -6,7 +6,7 @@
     <groupId>nl.big-o</groupId>
     <artifactId>rrd-antlr4</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <name>rrd-antlr4</name>
 
     <properties>
@@ -14,6 +14,7 @@
         <batik.version>1.7</batik.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <args4j.version>2.0.29</args4j.version>
     </properties>
 
     <dependencies>
@@ -47,7 +48,7 @@
         <dependency>
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
-            <version>2.0.29</version>
+            <version>${args4j.version}</version>
         </dependency>
 
     </dependencies>
