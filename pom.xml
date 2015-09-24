@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <args4j.version>2.0.29</args4j.version>
+        <itextpdf.version>5.5.6</itextpdf.version>
     </properties>
 
     <dependencies>
@@ -49,6 +50,12 @@
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
             <version>${args4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>${itextpdf.version}</version>
         </dependency>
 
     </dependencies>

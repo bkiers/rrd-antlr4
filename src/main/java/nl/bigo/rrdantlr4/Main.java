@@ -3,7 +3,6 @@ package nl.bigo.rrdantlr4;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
 
 /**
@@ -51,6 +50,15 @@ public class Main {
         for (String rule : generator.getRules().keySet()) {
             generator.createDiagram(rule);
         }
+
+        System.out.println("creating pdf pages for the grammar...");
+        boolean pdfCreated = generator.createPdf(generator.getRules());
+        if (pdfCreated) {
+            System.out.println("created pdf pages of the grammar...");
+        } else {
+            System.out.println("creating pdf failed...");
+        }
+
 
         System.out.println("creating an html page of the grammar...");
 
