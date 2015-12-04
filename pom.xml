@@ -6,7 +6,7 @@
     <groupId>nl.big-o</groupId>
     <artifactId>rrd-antlr4</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <name>rrd-antlr4</name>
 
     <properties>
