@@ -36,7 +36,7 @@ options {
 	tokenVocab=ANTLRv4Lexer;
 }
 
-// The main entry point for parsing a v4 grammar.
+/* <grammarSpec> The main entry point for parsing a v4 grammar. */
 grammarSpec
 	:	DOC_COMMENT?
 		grammarType id SEMI
@@ -53,10 +53,13 @@ grammarType
 		)
 	;
 
-// This is the list of all constructs that can be declared before
-// the set of rules that compose the grammar, and is invoked 0..n
-// times by the grammarPrequel rule.
+/* <prequelConstruct>
+** This is the list of all constructs that can be declared before
+** the set of rules that compose the grammar, and is invoked 0..n
+** times by the grammarPrequel rule.
+*/
 prequelConstruct
+
 	:	optionsSpec
 	|	delegateGrammars
 	|	tokensSpec

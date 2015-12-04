@@ -5,3 +5,7 @@ body {
 h1 {
     padding-bottom: 10px;
 }
+
+.border-notop td{
+ border-top: none;
+ }

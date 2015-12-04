@@ -6,7 +6,6 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.codec.PngImage;
-
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -17,18 +16,7 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedHashMap;
@@ -90,6 +78,8 @@ public class DiagramGenerator {
     // translate to SVG-railroad diagrams.
     private final Map<String, String> rules;
 
+    private final Map<String, String> comments;
+
     /**
      * Creates a new instance of this class and will parse the
      * provided `antlr4Grammar`.
@@ -107,6 +97,8 @@ public class DiagramGenerator {
         this.antlr4GrammarName = null;
         this.outputDir = null;
         this.rules = parse();
+
+        this.comments = CommentsParser.commentsMap(inputAsString(new FileInputStream(antlr4Grammar)));
     }
 
     /**
@@ -320,26 +312,24 @@ public class DiagramGenerator {
      * @return an html page as a string of all grammar rules.
      */
     public String getHtml(String fileName) {
-
-        String template = HTML_TEMPLATE;
-
-        template = template.replace("${grammar}", this.antlr4GrammarFileName);
-
-        template = template.replace("${css}", CSS_TEMPLATE);
-
         StringBuilder rows = new StringBuilder();
 
         for (String ruleName : this.rules.keySet()) {
             String svg = this.getSVG(ruleName);
-            rows.append("<tr><td id=\"").append(ruleName).append("\">")
-                    .append(ruleName).append("</td><td>").append(svg).append("</td></tr>");
+            String ruleDescription = comments.get(ruleName);
+
+            rows.append("<tr><td id=\"").append(ruleName).append("\"><h4>")
+                .append(ruleName).append("</h4></td><td>").append(svg).append("</td></tr>");
+            if (ruleDescription != null) {
+                rows.append("<tr class=\"border-notop\"><td></td><td>" + ruleDescription.replaceAll("\n", "<br>") + "</td></tr>");
+            }
         }
+        final String template = HTML_TEMPLATE
+            .replace("${grammar}", antlr4GrammarFileName)
+            .replace("${css}", CSS_TEMPLATE)
+            .replace("${rows}", rows);
 
-        template = template.replace("${rows}", rows);
-
-        template = this.addLinks(fileName, template);
-
-        return template;
+        return addLinks(fileName, template);
     }
 
     /**
@@ -450,6 +440,17 @@ public class DiagramGenerator {
                             .append(textTag).append("</a>");
                 }
             }
+        }
+
+        return builder.toString();
+    }
+
+    private static String inputAsString(InputStream input) {
+        final StringBuilder builder = new StringBuilder();
+        final Scanner scan = new Scanner(input);
+
+        while (scan.hasNextLine()) {
+            builder.append(scan.nextLine()).append(scan.hasNextLine() ? "\n" : "");
         }
 
         return builder.toString();
