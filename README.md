@@ -31,7 +31,7 @@ repository, run the following command from the terminal:
 
 ```
 cd target
-java -jar rrd-antlr4-0.1.0.jar https://raw.github.com/antlr/grammars-v4/master/json/Json.g4
+java -jar rrd-antlr4-0.1.2.jar https://raw.github.com/antlr/grammars-v4/master/json/Json.g4
 ```
 
 When the command above finishes, one html file and some png images
@@ -41,30 +41,17 @@ diagram and will look like this:
 
 ![json diagrams](https://raw.github.com/bkiers/rrd-antlr4/master/static/json.png)
 
-The parameter can be a remote file (as shown in the example above), or
-a local file but can even be a grammar. The command below:
-
-```
-java -jar target/rrd-antlr4-0.1.0.jar "grammar T; parse : .* EOF; ANY : . ;"
-```
-
-will generate the following 2 diagrams:
-
-![parse diagram](https://raw.github.com/bkiers/rrd-antlr4/master/static/parse.png)
-
-![ANY diagram](https://raw.github.com/bkiers/rrd-antlr4/master/static/ANY.png)
-
 ## Using programmatically
 
 To use this library in your own code, either stick the JAR file
-(rrd-antlr4-0.1.0.jar) in your classpath, or add the following
+(rrd-antlr4-0.1.2.jar) in your classpath, or add the following
 dependency to your POM (after having done a `mvn clean package`!):
 
 ```xml
 <dependency>
     <groupId>nl.big-o</groupId>
     <artifactId>rrd-antlr4</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.2</version>
 </dependency>
 ```
 

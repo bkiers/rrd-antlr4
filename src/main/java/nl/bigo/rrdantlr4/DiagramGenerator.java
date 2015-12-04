@@ -60,8 +60,7 @@ public class DiagramGenerator {
         }
     }
 
-    // The ANTLR 4 grammar to parse. It can be a remote- or local file,
-    // or even the grammar itself (as a string).
+    // The ANTLR 4 grammar to parse. It can be a remote- or local file
     private final String antlr4Grammar;
 
     // The filename of the ANTLR 4 grammar.
@@ -85,8 +84,7 @@ public class DiagramGenerator {
      * provided `antlr4Grammar`.
      *
      * @param antlr4Grammar
-     *         the ANTLR 4 grammar to parse. It can be a remote- or local file,
-     *         or even the grammar itself (as a string).
+     *         the ANTLR 4 grammar to parse. It can be a remote- or local file
      *
      * @throws IOException
      *         when the grammar could not be parsed.
