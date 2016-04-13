@@ -2,7 +2,7 @@
 
 Railroad Diagrams for ANTLR 4 grammar rules.
 
-I won't be adding new features for this tool. If you're looking for a 
+I won't be adding new features to this tool. If you're looking for a 
 more fully featured tool (including LaTeX output, to name just one thing),
 and a more modular setup version of this tool, have a look at flashpixx' 
 RRD-ANTLR4: https://github.com/flashpixx/RRD-ANTLR4
