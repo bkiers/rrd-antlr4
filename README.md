@@ -36,11 +36,12 @@ repository, run the following command from the terminal:
 
 ```
 cd target
-java -jar rrd-antlr4-0.1.2.jar https://raw.github.com/antlr/grammars-v4/master/json/Json.g4
+curl -O https://raw.githubusercontent.com/antlr/grammars-v4/master/json/JSON.g4
+java -jar rrd-antlr4-0.1.2.jar JSON.g4
 ```
 
-When the command above finishes, one html file and some png images
-will have been generated in the folder `./output/Json`. The html file
+When the command above finishes, one html and pdf file and some png images
+will have been generated in the folder `./output/JSON`. The html file
 does not make use of the png files but uses SVG to display the railroad
 diagram and will look like this:
 
