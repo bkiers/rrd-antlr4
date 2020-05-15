@@ -45,24 +45,27 @@ public class Main {
 
         DiagramGenerator generator = new DiagramGenerator(fileName);
 
-        System.out.println("creating png images from all grammar rules...");
+        if(rrdAntlrOptions.wantPNG) {
+            System.out.println("creating png images from all grammar rules...");
 
-        for (String rule : generator.getRules().keySet()) {
-            generator.createDiagram(rule);
+            for (String rule : generator.getRules().keySet()) {
+                generator.createDiagram(rule);
+            }
         }
 
-        System.out.println("creating pdf pages for the grammar...");
-        boolean pdfCreated = generator.createPdf(generator.getRules());
-        if (pdfCreated) {
-            System.out.println("created pdf pages of the grammar...");
-        } else {
-            System.out.println("creating pdf failed...");
+        if(rrdAntlrOptions.wantPDF) {
+            System.out.println("creating pdf pages for the grammar...");
+            boolean pdfCreated = generator.createPdf(generator.getRules());
+            if (pdfCreated) {
+                System.out.println("created pdf pages of the grammar...");
+            } else {
+                System.out.println("creating pdf failed...");
+            }
         }
-
 
         System.out.println("creating an html page of the grammar...");
 
-        generator.createHtml(rrdAntlrOptions.getOutputFileName());
+        generator.createHtml(rrdAntlrOptions.getOutputFileName(), rrdAntlrOptions.wantSimpleHTML);
 
         System.out.println("finished");
     }

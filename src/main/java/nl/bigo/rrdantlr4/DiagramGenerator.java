@@ -46,6 +46,7 @@ public class DiagramGenerator {
 
     // The templates used to create an HTML page from all grammar rules.
     private static final String HTML_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.html"));
+    private static final String HTML_SIMPE_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.simple.html"));
     private static final String CSS_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.css"));
 
     // Initialize the JS engine to load the library used to convert the diagram-DSL
@@ -309,7 +310,7 @@ public class DiagramGenerator {
      *
      * @return an html page as a string of all grammar rules.
      */
-    public String getHtml(String fileName) {
+    public String getHtml(String fileName, boolean simpleHTML) {
         StringBuilder rows = new StringBuilder();
 
         for (String ruleName : this.rules.keySet()) {
@@ -322,12 +323,21 @@ public class DiagramGenerator {
                 rows.append("<tr class=\"border-notop\"><td></td><td>" + ruleDescription.replaceAll("\n", "<br>") + "</td></tr>");
             }
         }
-        final String template = HTML_TEMPLATE
-            .replace("${grammar}", antlr4GrammarFileName)
-            .replace("${css}", CSS_TEMPLATE)
-            .replace("${rows}", rows);
 
-        return addLinks(fileName, template);
+        if(simpleHTML) {
+            final String template = HTML_SIMPE_TEMPLATE
+                .replace("${rows}", rows);
+            return addLinks(fileName, template);
+        }
+        else {
+
+            final String template = HTML_TEMPLATE
+                .replace("${grammar}", antlr4GrammarFileName)
+                .replace("${css}", CSS_TEMPLATE)
+                .replace("${rows}", rows);
+
+            return addLinks(fileName, template);
+        }
     }
 
     /**
@@ -336,7 +346,7 @@ public class DiagramGenerator {
      * @return `true` iff the creation of the html page was successful.
      */
     public boolean createHtml() {
-        return createHtml("index.html");
+        return createHtml("index.html", false);
     }
 
     /**
@@ -347,9 +357,9 @@ public class DiagramGenerator {
      *
      * @return `true` iff the creation of the html page was successful.
      */
-    public boolean createHtml(String fileName) {
+    public boolean createHtml(String fileName, boolean simpleHTML) {
 
-        String html = this.getHtml(fileName);
+        String html = this.getHtml(fileName, simpleHTML);
 
         PrintWriter out = null;
 

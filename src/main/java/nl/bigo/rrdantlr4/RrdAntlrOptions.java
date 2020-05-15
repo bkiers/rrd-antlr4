@@ -14,6 +14,18 @@ public class RrdAntlrOptions {
             "\nDefault is index.html")
     private String outputFileName = "index.html";
 
+    @Option(name="--simple", help = false, usage = "Generate simple HTML output, suitable for embedding in existing page.")
+    public boolean wantSimpleHTML;
+
+
+    @Option(name="--pdf", help = false, usage = "Generate PDF output.")
+    public boolean wantPDF;
+
+    @Option(name="--png", help = false, usage = "Generate PNG images.")
+    public boolean wantPNG;
+
+
+
     @Option(name="--help", aliases = {"-?","-h"}, help = true, usage = "Show the command line usage and exit")
     private boolean requestingHelp;
 
