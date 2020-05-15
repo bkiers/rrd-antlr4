@@ -317,7 +317,7 @@ public class DiagramGenerator {
             String svg = this.getSVG(ruleName);
             String ruleDescription = comments.get(ruleName);
 
-            rows.append("<tr><td id=\"").append(ruleName).append("\"><h4>")
+            rows.append("<tr><td id=\"").append(antlr4GrammarFileName).append("_").append(ruleName).append("\"><h4>")
                 .append(ruleName).append("</h4></td><td>").append(svg).append("</td></tr>");
             if (ruleDescription != null) {
                 rows.append("<tr class=\"border-notop\"><td></td><td>" + ruleDescription.replaceAll("\n", "<br>") + "</td></tr>");
@@ -327,7 +327,7 @@ public class DiagramGenerator {
         if(simpleHTML) {
             final String template = HTML_SIMPE_TEMPLATE
                 .replace("${rows}", rows);
-            return addLinks(fileName, template);
+            return addLinks(antlr4GrammarFileName, template);
         }
         else {
 
@@ -336,7 +336,7 @@ public class DiagramGenerator {
                 .replace("${css}", CSS_TEMPLATE)
                 .replace("${rows}", rows);
 
-            return addLinks(fileName, template);
+            return addLinks(antlr4GrammarFileName, template);
         }
     }
 
@@ -409,8 +409,8 @@ public class DiagramGenerator {
      * will be wrapped with '<a xlink:href=...' to make the grammar
      * rules clickable inside the HTML page.
      *
-     * @param fileName
-     *         the name og the parsed grammar.
+     * @param antlr4GrammarFileName
+     *         the name of the parsed grammar.
      * @param template
      *         the template whose text-tags need to be linked.
      *
@@ -418,7 +418,7 @@ public class DiagramGenerator {
      * will be wrapped with '<a xlink:href=...' to make the grammar
      * rules clickable inside the HTML page.
      */
-    private String addLinks(String fileName, String template) {
+    private String addLinks(String antlr4GrammarFileName, String template) {
 
         StringBuilder builder = new StringBuilder();
         Matcher m = TEXT_PATTERN.matcher(template);
@@ -443,8 +443,7 @@ public class DiagramGenerator {
                 else {
                     // Yes, the rule matches with a parsed rule, add a link
                     // around it.
-                    builder.append("<a xlink:href=\"").append(fileName)
-                            .append("#").append(rule).append("\">")
+                    builder.append("<a xlink:href=\"").append("#").append(antlr4GrammarFileName).append("_").append(rule).append("\">")
                             .append(textTag).append("</a>");
                 }
             }
