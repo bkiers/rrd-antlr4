@@ -46,6 +46,7 @@ public class DiagramGenerator {
 
     // The templates used to create an HTML page from all grammar rules.
     private static final String HTML_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.html"));
+    private static final String HTML_SIMPE_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.simple.html"));
     private static final String CSS_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.css"));
 
     // Initialize the JS engine to load the library used to convert the diagram-DSL
@@ -309,25 +310,34 @@ public class DiagramGenerator {
      *
      * @return an html page as a string of all grammar rules.
      */
-    public String getHtml(String fileName) {
+    public String getHtml(String fileName, boolean simpleHTML) {
         StringBuilder rows = new StringBuilder();
 
         for (String ruleName : this.rules.keySet()) {
             String svg = this.getSVG(ruleName);
             String ruleDescription = comments.get(ruleName);
 
-            rows.append("<tr><td id=\"").append(ruleName).append("\"><h4>")
+            rows.append("<tr><td id=\"").append(antlr4GrammarFileName).append("_").append(ruleName).append("\"><h4>")
                 .append(ruleName).append("</h4></td><td>").append(svg).append("</td></tr>");
             if (ruleDescription != null) {
                 rows.append("<tr class=\"border-notop\"><td></td><td>" + ruleDescription.replaceAll("\n", "<br>") + "</td></tr>");
             }
         }
-        final String template = HTML_TEMPLATE
-            .replace("${grammar}", antlr4GrammarFileName)
-            .replace("${css}", CSS_TEMPLATE)
-            .replace("${rows}", rows);
 
-        return addLinks(fileName, template);
+        if(simpleHTML) {
+            final String template = HTML_SIMPE_TEMPLATE
+                .replace("${rows}", rows);
+            return addLinks(antlr4GrammarFileName, template);
+        }
+        else {
+
+            final String template = HTML_TEMPLATE
+                .replace("${grammar}", antlr4GrammarFileName)
+                .replace("${css}", CSS_TEMPLATE)
+                .replace("${rows}", rows);
+
+            return addLinks(antlr4GrammarFileName, template);
+        }
     }
 
     /**
@@ -336,7 +346,7 @@ public class DiagramGenerator {
      * @return `true` iff the creation of the html page was successful.
      */
     public boolean createHtml() {
-        return createHtml("index.html");
+        return createHtml("index.html", false);
     }
 
     /**
@@ -347,9 +357,9 @@ public class DiagramGenerator {
      *
      * @return `true` iff the creation of the html page was successful.
      */
-    public boolean createHtml(String fileName) {
+    public boolean createHtml(String fileName, boolean simpleHTML) {
 
-        String html = this.getHtml(fileName);
+        String html = this.getHtml(fileName, simpleHTML);
 
         PrintWriter out = null;
 
@@ -399,8 +409,8 @@ public class DiagramGenerator {
      * will be wrapped with '<a xlink:href=...' to make the grammar
      * rules clickable inside the HTML page.
      *
-     * @param fileName
-     *         the name og the parsed grammar.
+     * @param antlr4GrammarFileName
+     *         the name of the parsed grammar.
      * @param template
      *         the template whose text-tags need to be linked.
      *
@@ -408,7 +418,7 @@ public class DiagramGenerator {
      * will be wrapped with '<a xlink:href=...' to make the grammar
      * rules clickable inside the HTML page.
      */
-    private String addLinks(String fileName, String template) {
+    private String addLinks(String antlr4GrammarFileName, String template) {
 
         StringBuilder builder = new StringBuilder();
         Matcher m = TEXT_PATTERN.matcher(template);
@@ -433,8 +443,7 @@ public class DiagramGenerator {
                 else {
                     // Yes, the rule matches with a parsed rule, add a link
                     // around it.
-                    builder.append("<a xlink:href=\"").append(fileName)
-                            .append("#").append(rule).append("\">")
+                    builder.append("<a xlink:href=\"").append("#").append(antlr4GrammarFileName).append("_").append(rule).append("\">")
                             .append(textTag).append("</a>");
                 }
             }
