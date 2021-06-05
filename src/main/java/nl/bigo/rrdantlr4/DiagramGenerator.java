@@ -38,7 +38,7 @@ public class DiagramGenerator {
 
     // Java's built-in JS interpreter (Rhino).
     private static final ScriptEngineManager MANAGER = new ScriptEngineManager();
-    private static final ScriptEngine ENGINE = MANAGER.getEngineByName("JavaScript");
+    private static final ScriptEngine ENGINE = MANAGER.getEngineByName("graal.js");
 
     // The library used to convert grammar rules to SVG.
     private static final String RAILROAD_SCRIPT = slurp(DiagramGenerator.class.getResourceAsStream("/railroad-diagram.js"));
@@ -46,7 +46,7 @@ public class DiagramGenerator {
 
     // The templates used to create an HTML page from all grammar rules.
     private static final String HTML_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.html"));
-    private static final String HTML_SIMPE_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.simple.html"));
+    private static final String HTML_SIMPLE_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.simple.html"));
     private static final String CSS_TEMPLATE = slurp(DiagramGenerator.class.getResourceAsStream("/template.css"));
 
     // Initialize the JS engine to load the library used to convert the diagram-DSL
@@ -325,7 +325,7 @@ public class DiagramGenerator {
         }
 
         if(simpleHTML) {
-            final String template = HTML_SIMPE_TEMPLATE
+            final String template = HTML_SIMPLE_TEMPLATE
                 .replace("${rows}", rows);
             return addLinks(antlr4GrammarFileName, template);
         }
